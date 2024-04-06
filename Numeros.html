@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Combinaciones</title>
+</head>
+
+<body>
+    <button onclick="generateAndDownloadCombinations()">Generar combinaciones</button>
+    <script>
+        function generateAndDownloadCombinations() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const combinations = [];
+
+            // Combinaciones
+            function createCombinations(prefix, k) {
+                if (k === 0) {
+                    combinations.push(prefix);
+                    return;
+                }
+                for (let i = 0; i < chars.length; i++) {
+                    createCombinations(prefix + chars[i], k - 1);
+                }
+            }
+
+            createCombinations('', 4);
+
+            const jsonStr = JSON.stringify(combinations);
+
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+
+            const a = document.createElement('a');
+            a.download = 'combinations.json';
+            a.href = window.URL.createObjectURL(blob);
+            a.dataset.downloadurl = ['application/json', a.download, a.href].join(':');
+
+
+            a.click();
+        }
+    </script>
+</body>
+
+</html>
